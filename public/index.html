@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fi">
+    <head>
+        <meta charset="utf-8">
+        <title>Findyn kiltteystodiste</title>
+        <meta name="description" content="Oletko ollut kiltti?">
+        <meta name="author" content="Findynet">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" href="favicon.png">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="width">
+        <meta name="theme-color" content="#41ebff">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Findynetin kiltteystodiste">
+        <meta property="og:url" content="https://joulu.todiste.fi/">
+        <meta property="og:image" content="https://joulu.todiste.fi/favicon.png">
+        <meta property="og:description" content="Hanki todiste, että olet ollut kiltti tänä vuonna.">
+        <script src="qrcode.min.js"></script>
+    </head>
+    <body>
+        <div id="laatikko">
+            <img class="logo" src="favicon.png" alt="Findynet">
+            <div id="qrcode"></div>
+        </div>
+        <h1>Olen ollut kiltti -todiste</h1>
+        <div id="ohje">
+            <p>Joulu on aivan nurkan takana, ja pian kuuluu tuttu kysymys: <q>Onko täällä ollut kilttejä lapsia?</q> Tänä vuonna sinulla on mahdollisuus olla täysin valmis vastaamaan – ei vain sanoilla, vaan myös virallisella todisteella!</p>
+            <p>Voit luoda itsellesi Olen ollut kiltti -todisteen, jonka voit ylpeänä esittää Joulupukille juuri ennen lahjojen jakoa. Kuten tiedät, Joulupukki tarkistaa aina kiltteyslistansa kahdesti. Tämä todiste on virallinen merkki siitä, että olet tänä vuonna ollut yksi tonttujen suosikeista ja ansaitset lahjasi täysin oikeutetusti! Kun pukki kysyy, voit ylpeänä esittää todisteen ja vastata: <q>Kyllä, olen ollut kiltti – ja tässä on todisteeni!</q></p>
+            <p>Täytä alla olevat kentät rehellisesti ja paina <q>Lataa todiste</q>. Saat henkilökohtaisen todisteen, jossa kerrotaan, että olet ollut kiltti. Todiste on voimassa yhden vuoden.</p>
+        </div>
+        <div id="avain"></div>
+        <form id="form">
+            <input type="hidden" name="protocol" id="protocol" value="OPENID4VCI_FINAL1">
+            <label for="Etunimi">Etunimi:</label>
+            <input type="text" name="Etunimi" id="Etunimi">
+            <label for="Sukunimi">Sukunimi:</label>
+            <input type="text" name="Sukunimi" id="Sukunimi">
+            <span class="label">Oletko ollut kiltti tänä vuonna? Vastaa rehellisesti – tontut kurkkivat!</span>
+            <label><input type="checkbox" name="Kiltti" id="Kiltti"> Kyllä</label>
+            <button type="button" id="lataa">Lataa todiste</button>
+        </form>
+        <footer>
+            <p>Hauskaa joulua ja rauhallista uutta vuotta!</p>
+        </footer>
+        <script>
+            STAR_COUNT = Math.floor((Math.random() * 10) + 5)
+            var qrcode = new QRCode("qrcode", { width: 256, height: 256 });
+
+            const f = document.getElementById('form')
+            const o = document.getElementById('ohje')
+            const instructions = o.innerHTML
+            const l = document.getElementById('laatikko')
+
+            const query = new URLSearchParams(window.location.search);
+            query.forEach((value, key) => {
+                const element = document.querySelector(`[name="${key}"]`)
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = value.toLowerCase() === 'true' || value === '1'
+                    } else {
+                        element.value = value
+                    }
+                }
+            })
+            document.getElementById('lataa').addEventListener('click', async () => {
+                const issueUrl = '/issue'
+                const issueParams = {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    // body: new URLSearchParams(new FormData(f))
+                    // body: new FormData(f)
+                    body: JSON.stringify({
+                        Etunimi: document.getElementById('Etunimi').value,
+                        Sukunimi: document.getElementById('Sukunimi').value,
+                        Kiltti: document.getElementById('Kiltti').checked,
+                        protocol: document.getElementById('protocol').value
+                    })
+                }
+                const response = await fetch(issueUrl,  issueParams)
+                const respJson = await response.json()
+                if (!respJson.url) {
+                    o.textContent = "Pahoittelut, mutta todisteen muodostus ei onnistunut. Vastasitko varmasti rehellisesti?"
+                }
+                else {
+                    qrcode.makeCode(respJson.url)
+                    l.classList.toggle('avattu')
+                    o.textContent = ""
+                    o.appendChild(document.createTextNode("Skannaa QR-koodi lompakkosovelluksella."))
+                    const a = document.createElement('a')
+                    a.href = '/pukki.html'
+                    a.className = 'block'
+                    a.textContent = "Kurkkaa joulupukin tarkastussovellus"
+                    o.appendChild(a)
+                    const back = document.createElement('a')
+                    back.textContent = "Palaa"
+                    back.className = 'block'
+                    back.onclick = () => { 
+                        l.classList.toggle('avattu')
+                        f.style.display = 'block'
+                        o.innerHTML = instructions
+                    }
+                    o.appendChild(back)
+                    if (respJson.pin) {
+                        o.textContent += " Kun lompakkosovellus pyytää nelinumeroista koodia, syötä alla olevat numerot."
+                        document.getElementById('avain').textContent = respJson.pin
+                    }
+                    const qrDiv = document.getElementById('qrcode')
+                    const img = qrDiv.querySelector('img')
+                    if (img) {
+                        const a = document.createElement('a')
+                        a.href = respJson.url
+                        qrDiv.appendChild(a)
+                        a.appendChild(img)
+                    }
+                    f.style.display = 'none'
+                }
+            })
+/*
+            let stars = 0
+            while (stars < STAR_COUNT) {
+                const img = document.createElement('img')
+                img.src = './star.svg'
+                img.className = 'star'
+                img.style.opacity = 0
+                img.style.left = Math.floor((Math.random() * 80) + 10) + '%'
+                img.style.top = Math.floor((Math.random() * 50) + 10) + '%'
+                img.style.animationDelay = Math.floor(Math.random() * STAR_COUNT * 2 * 1000) + 'ms'
+                document.body.appendChild(img)
+                stars++
+            }
+*/
+        </script>
+    </body>
+</html>
