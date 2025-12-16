@@ -11,29 +11,31 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="width">
-        <meta name="theme-color" content="#41ebff">
+        <meta name="theme-color" content="#0d0342">
         <meta property="og:type" content="website">
         <meta property="og:title" content="Pukin tarkastussovellus">
-       <meta property="og:url" content="https://joulu.todiste.fi/pukki.html">
+        <meta property="og:url" content="https://joulu.todiste.fi/pukki.html">
         <meta property="og:image" content="https://joulu.todiste.fi/favicon.png">
         <meta property="og:description" content="Tarkasta, onko lapsi ollut kiltti.">
         <script src="qrcode.min.js"></script>
+        <script src="https://unpkg.com/translate-element/translate-element.js"></script>
     </head>
     <body>
+        <translate-element src="./translations.json"></translate-element>
         <div id="laatikko">
             <img class="logo" src="favicon.png" alt="Findynet">
             <div id="qrcode"></div>
         </div>
-        <h1>Pukin tarkastussovellus</h1>
+        <h1 lang="fi">Pukin tarkastussovellus</h1>
         <div id="ohje">
-            <p>Pyydä lasta esittämään kiltteystodisteensa. Luo jokaista lasta varten uusi todistepyyntö alla olevalla painikkeella.</p>
+            <p lang="fi">Pyydä lasta esittämään kiltteystodisteensa. Luo jokaista lasta varten uusi todistepyyntö alla olevalla painikkeella.</p>
         </div>
         <form id="form">
             <input type="hidden" name="protocol" id="protocol" value="OPENID4VP_FINAL1">
-            <button type="button" id="muodosta">Muodosta todistepyyntö</button>
+            <button type="button" id="muodosta"><span lang="fi">Muodosta todistepyyntö</span></button>
         </form>
         <footer>
-            <p>Hauskaa joulua ja rauhallista uutta vuotta!</p>
+            <p lang="fi">Hauskaa joulua ja rauhallista uutta vuotta!</p>
         </footer>
         <script>
             STAR_COUNT = Math.floor((Math.random() * 10) + 5)
@@ -70,13 +72,14 @@
                 const response = await fetch(verifyUrl,  verifyParams)
                 const respJson = await response.json()
                 if (!respJson.url || !respJson.id) {
-                    o.textContent = "Oho! Jotain meni pieleen..."
+                    o.innerHTML = '<p lang="fi">Oho! Jotain meni pieleen...</p>'
                 }
                 else {
                     currentId = respJson.id
                     qrcode.makeCode(respJson.url)
                     l.classList.toggle('avattu')
                     const back = document.createElement('a')
+                    back.lang = 'fi'
                     back.textContent = "Palaa"
                     back.className = 'back'
                     back.onclick = () => { 
@@ -87,8 +90,7 @@
                     const status = document.createElement('p')
                     status.id = 'status'
                     status.textContent = '.'
-                    o.textContent = ""
-                    o.appendChild(document.createTextNode("Skannaa QR-koodi lompakkosovelluksella."))
+                    o.innerHTML = '<p lang="fi">Skannaa QR-koodi lompakkosovelluksella.</p>'
                     o.appendChild(status)
                     o.appendChild(back)
                     const qrDiv = document.getElementById('qrcode')
@@ -122,7 +124,7 @@
                 const resp = await fetch(`/status/${encodeURIComponent(currentId)}`)
                 if (!resp.ok) {
                     clearInterval(interval)
-                    o.textContent = "Oho! Jotain meni pieleen..."
+                    o.innerHTML = '<p lang="fi">Oho! Jotain meni pieleen...</p>'
                     l.classList.remove('avattu')
                     f.style.display = 'block'
                     o.innerHTML = instructions
@@ -134,7 +136,7 @@
                     clearInterval(interval)
                     const claims = status.proofInputs?.at(0)?.claims
                     if (!claims) {
-                        s.textContent = "Oho! Jotain meni pieleen..."
+                        s.innerHTML = '<p lang="fi">Oho! Jotain meni pieleen...</p>'
                         console.error('No claims in accepted proof')
                         return
                     }
@@ -142,8 +144,9 @@
                     claims.forEach(claim => {
                         values[claim.path] = claim.value
                     })
-                    s.innerHTML = escapeHtml(values.Etunimi) + " " + escapeHtml(values.Sukunimi) + " on ollut kiltti: " 
-                    +"<strong>" + (values.Kiltti === "true" ? 'Kyllä' : 'Ei') + "!</strong>"
+                    s.innerHTML = '<p>' + escapeHtml(values.Etunimi) + " " + escapeHtml(values.Sukunimi) + 
+                        ' <span lang="fi">on ollut kiltti</span>: ' +
+                        '<strong lang="fi">' + (values.Kiltti === "true" ? 'Kyllä' : 'Ei') + '!</strong></p>'
                     return
                 }
                 if (status.state == 'REJECTED') {

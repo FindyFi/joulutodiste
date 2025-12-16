@@ -11,38 +11,40 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="width">
-        <meta name="theme-color" content="#41ebff">
+        <meta name="theme-color" content="#0d0342">
         <meta property="og:type" content="website">
         <meta property="og:title" content="Findynetin kiltteystodiste">
         <meta property="og:url" content="https://joulu.todiste.fi/">
         <meta property="og:image" content="https://joulu.todiste.fi/favicon.png">
         <meta property="og:description" content="Hanki todiste, että olet ollut kiltti tänä vuonna.">
         <script src="qrcode.min.js"></script>
+        <script src="https://unpkg.com/translate-element/translate-element.js"></script>
     </head>
     <body>
+        <translate-element src="./translations.json"></translate-element>
         <div id="laatikko">
             <img class="logo" src="favicon.png" alt="Findynet">
             <div id="qrcode"></div>
         </div>
-        <h1>Olen ollut kiltti -todiste</h1>
+        <h1 lang="fi">Olen ollut kiltti -todiste</h1>
         <div id="ohje">
-            <p>Joulu on aivan nurkan takana, ja pian kuuluu tuttu kysymys: <q>Onko täällä ollut kilttejä lapsia?</q> Tänä vuonna sinulla on mahdollisuus olla täysin valmis vastaamaan – ei vain sanoilla, vaan myös virallisella todisteella!</p>
-            <p>Voit luoda itsellesi Olen ollut kiltti -todisteen, jonka voit ylpeänä esittää Joulupukille juuri ennen lahjojen jakoa. Kuten tiedät, Joulupukki tarkistaa aina kiltteyslistansa kahdesti. Tämä todiste on virallinen merkki siitä, että olet tänä vuonna ollut yksi tonttujen suosikeista ja ansaitset lahjasi täysin oikeutetusti! Kun pukki kysyy, voit ylpeänä esittää todisteen ja vastata: <q>Kyllä, olen ollut kiltti – ja tässä on todisteeni!</q></p>
-            <p>Täytä alla olevat kentät rehellisesti ja paina <q>Lataa todiste</q>. Saat henkilökohtaisen todisteen, jossa kerrotaan, että olet ollut kiltti. Todiste on voimassa yhden vuoden.</p>
+            <p lang="fi">Joulu on aivan nurkan takana, ja pian kuuluu tuttu kysymys: <q>Onko täällä ollut kilttejä lapsia?</q> Tänä vuonna sinulla on mahdollisuus olla täysin valmis vastaamaan – ei vain sanoilla, vaan myös virallisella todisteella!</p>
+            <p lang="fi">Voit luoda itsellesi Olen ollut kiltti -todisteen, jonka voit ylpeänä esittää Joulupukille juuri ennen lahjojen jakoa. Kuten tiedät, Joulupukki tarkistaa aina kiltteyslistansa kahdesti. Tämä todiste on virallinen merkki siitä, että olet tänä vuonna ollut yksi tonttujen suosikeista ja ansaitset lahjasi täysin oikeutetusti! Kun pukki kysyy, voit ylpeänä esittää todisteen ja vastata: <q>Kyllä, olen ollut kiltti – ja tässä on todisteeni!</q></p>
+            <p lang="fi">Täytä alla olevat kentät rehellisesti ja paina <q>Lataa todiste</q>. Saat henkilökohtaisen todisteen, jossa kerrotaan, että olet ollut kiltti. Todiste on voimassa yhden vuoden.</p>
         </div>
         <div id="avain"></div>
         <form id="form">
             <input type="hidden" name="protocol" id="protocol" value="OPENID4VCI_FINAL1">
-            <label for="Etunimi">Etunimi:</label>
+            <label for="Etunimi" lang="fi">Etunimi:</label>
             <input type="text" name="Etunimi" id="Etunimi">
-            <label for="Sukunimi">Sukunimi:</label>
+            <label for="Sukunimi" lang="fi">Sukunimi:</label>
             <input type="text" name="Sukunimi" id="Sukunimi">
-            <span class="label">Oletko ollut kiltti tänä vuonna? Vastaa rehellisesti – tontut kurkkivat!</span>
-            <label><input type="checkbox" name="Kiltti" id="Kiltti"> Kyllä</label>
-            <button type="button" id="lataa">Lataa todiste</button>
+            <span class="block" lang="fi">Oletko ollut kiltti tänä vuonna? Vastaa rehellisesti – tontut kurkkivat!</span>
+            <span class="block"><input type="checkbox" name="Kiltti" id="Kiltti"> <label for="Kiltti" lang="fi">Kyllä</label></span>
+            <button type="button" id="lataa"><span lang="fi">Lataa todiste</span></button>
         </form>
         <footer>
-            <p>Hauskaa joulua ja rauhallista uutta vuotta!</p>
+            <p lang="fi">Hauskaa joulua ja rauhallista uutta vuotta!</p>
         </footer>
         <script>
             STAR_COUNT = Math.floor((Math.random() * 10) + 5)
@@ -84,19 +86,25 @@
                 const response = await fetch(issueUrl,  issueParams)
                 const respJson = await response.json()
                 if (!respJson.url) {
-                    o.textContent = "Pahoittelut, mutta todisteen muodostus ei onnistunut. Vastasitko varmasti rehellisesti?"
+                    o.innerHTML = '<p lang="fi">Pahoittelut, mutta todisteen muodostus ei onnistunut. Vastasitko varmasti rehellisesti?</p>'
                 }
                 else {
                     qrcode.makeCode(respJson.url)
                     l.classList.toggle('avattu')
-                    o.textContent = ""
-                    o.appendChild(document.createTextNode("Skannaa QR-koodi lompakkosovelluksella."))
+                    o.innerHTML = '<p lang="fi">Skannaa QR-koodi lompakkosovelluksella.</p>' +
+                        '<p lang="fi">Lataa Procivis One -lompakko:</p>' + '<p>' +
+                        '<a target="_blank" href="https://play.google.com/store/apps/details?id=ch.procivis.one.wallet.trial&pli=1">Android</a>' +
+                        ' | ' +
+                        '<a target="_blank" href="https://apps.apple.com/us/app/procivis-one-wallet/id6480111491">iOS</a>' +
+                        '</p>'
                     const a = document.createElement('a')
+                    a.lang = 'fi'
                     a.href = '/pukki.html'
                     a.className = 'block'
                     a.textContent = "Kurkkaa joulupukin tarkastussovellus"
                     o.appendChild(a)
                     const back = document.createElement('a')
+                    back.lang = 'fi'
                     back.textContent = "Palaa"
                     back.className = 'block'
                     back.onclick = () => { 
@@ -105,10 +113,6 @@
                         o.innerHTML = instructions
                     }
                     o.appendChild(back)
-                    if (respJson.pin) {
-                        o.textContent += " Kun lompakkosovellus pyytää nelinumeroista koodia, syötä alla olevat numerot."
-                        document.getElementById('avain').textContent = respJson.pin
-                    }
                     const qrDiv = document.getElementById('qrcode')
                     const img = qrDiv.querySelector('img')
                     if (img) {

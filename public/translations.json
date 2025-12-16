@@ -1,0 +1,117 @@
+{
+  "Olen ollut kiltti -todiste": {
+    "en": "I have been nice -credential",
+    "de": "Ich war brav -Nachweis",
+    "sv": "Jag har varit snäll -intyg"
+  },
+  "Joulu on aivan nurkan takana, ja pian kuuluu tuttu kysymys: Onko täällä ollut kilttejä lapsia? Tänä vuonna sinulla on mahdollisuus olla täysin valmis vastaamaan – ei vain sanoilla, vaan myös virallisella todisteella!": {
+    "en": "Christmas is just around the corner, and soon the familiar question will be asked: <q>Have you been naughty or nice?</q> This year, you have the opportunity to be fully prepared to answer – not just with words, but with an official credential!",
+    "de": "Weihnachten steht vor der Tür, und bald wird die vertraute Frage gestellt: <q>Gibt es hier brave Kinder?</q> In diesem Jahr haben Sie die Möglichkeit, vollständig vorbereitet zu sein – nicht nur mit Worten, sondern mit einem offiziellen Nachweis!",
+    "sv": "Julen är precis runt hörnet, och snart kommer den välbekanta frågan: <q>Har du varit snäll i år?</q> I år har du möjlighet att vara helt förberedd för att svara – inte bara med ord, utan också med ett officiellt intyg!"
+  },
+  "Voit luoda itsellesi Olen ollut kiltti -todisteen, jonka voit ylpeänä esittää Joulupukille juuri ennen lahjojen jakoa. Kuten tiedät, Joulupukki tarkistaa aina kiltteyslistansa kahdesti. Tämä todiste on virallinen merkki siitä, että olet tänä vuonna ollut yksi tonttujen suosikeista ja ansaitset lahjasi täysin oikeutetusti! Kun pukki kysyy, voit ylpeänä esittää todisteen ja vastata: Kyllä, olen ollut kiltti – ja tässä on todisteeni!": {
+    "en": "You can create an <em>I have been nice</em> -credential for yourself, which you can proudly present to Santa Claus just before the gift-giving. As you know, Santa always checks his nice list twice. This credential is an official mark that you have been one of the elves' favorites this year and deserve your gifts rightfully! When Santa asks, you can proudly present the credential and answer: <q>Yes, I have been nice – and here is my proof!</q>",
+    "de": "Sie können sich ein <em>Ich war brav</em>-Zertifikat erstellen, das Sie dem Weihnachtsmann kurz vor der Geschenkübergabe stolz vorzeigen können. Wie Sie wissen, überprüft der Weihnachtsmann seine Liste der braven Kinder immer zweimal. Dieses Zertifikat ist ein offizielles Zeichen dafür, dass Sie in diesem Jahr zu den Favoriten der Elfen gehören und Ihre Geschenke zu Recht verdienen! Wenn der Weihnachtsmann fragt, können Sie stolz das Zertifikat vorzeigen und antworten: <q>Ja, ich war brav – und hier ist mein Beweis!</q>",
+    "sv": "Du kan skapa ett <em>Jag har varit snäll</em>-intyg för dig själv, som du stolt kan visa upp för jultomten precis innan gåvorna delas ut. Som du vet, kontrollerar jultomten alltid sin snälla lista två gånger. Detta intyg är ett officiellt bevis på att du har varit en av tomtens favoriter i år och förtjänar dina gåvor rättmätigt! När jultomten frågar kan du stolt visa upp intyget och svara: <q>Ja, jag har varit snäll – och här är mitt bevis!</q>"
+  },
+  "Täytä alla olevat kentät rehellisesti ja paina Lataa todiste. Saat henkilökohtaisen todisteen, jossa kerrotaan, että olet ollut kiltti. Todiste on voimassa yhden vuoden.": {
+    "en": "Fill in the fields below honestly and press <q>Get Credential</q>. You will receive a personal credential stating that you have been nice. The credential is valid for one year.",
+    "de": "Füllen Sie die untenstehenden Felder ehrlich aus und drücken Sie auf <q>Nachweis herunterladen</q>. Sie erhalten ein persönliches Zertifikat, das bescheinigt, dass Sie brav waren. Das Zertifikat ist ein Jahr lang gültig.",
+    "sv": "Fyll i fälten nedan ärligt och tryck på <q>Hämta intyg</q>. Du kommer att få ett personligt intyg som anger att du har varit snäll. Intyget är giltigt i ett år."
+  },
+  "Etunimi:": {
+    "en": "First Name:",
+    "de": "Vorname:",
+    "sv": "Förnamn:"
+  },
+  "Sukunimi:": {
+    "en": "Last Name:",
+    "de": "Nachname:",
+    "sv": "Efternamn:"
+  },
+  "Oletko ollut kiltti tänä vuonna? Vastaa rehellisesti – tontut kurkkivat!": {
+    "en": "Have you been nice this year? Answer honestly – the elves are watching!",
+    "de": "Warst du dieses Jahr brav? Antworte ehrlich – die Elfen schauen zu!",
+    "sv": "Har du varit snäll i år? Svara ärligt – tomtarna tittar!"
+  },
+  "Kyllä": {
+    "en": "Yes",
+    "de": "Ja",
+    "sv": "Ja"
+  },
+  "Lataa todiste": {
+    "en": "Get Credential",
+    "de": "Nachweis herunterladen",
+    "sv": "Hämta intyg"
+  },
+  "Hauskaa joulua ja rauhallista uutta vuotta!": {
+    "en": "Merry Christmas and a Happy New Year!",
+    "de": "Frohe Weihnachten und ein friedliches neues Jahr!",
+    "sv": "God Jul och Gott Nytt År!"
+  },
+  "Pahoittelut, mutta todisteen muodostus ei onnistunut. Vastasitko varmasti rehellisesti?": {
+    "en": "Sorry, but the credential issuance failed. Are you sure you answered honestly?",
+    "de": "Entschuldigung, aber die Ausstellung des Nachweises ist fehlgeschlagen. Bist du sicher, dass du ehrlich geantwortet hast?",
+    "sv": "Ursäkta, men utfärdandet av intyget misslyckades. Är du säker på att du svarade ärligt?"
+  },
+  "Skannaa QR-koodi lompakkosovelluksella.": {
+    "en": "Scan the QR code with your wallet app.",
+    "de": "Scanne den QR-Code mit deiner Wallet-App.",
+    "sv": "Skanna QR-koden med din plånboksapp."
+  },
+  "Lataa Procivis One -lompakko:": {
+    "en": "Download the Procivis One wallet:",
+    "de": "Lade die Procivis One Wallet herunter:",
+    "sv": "Ladda ner Procivis One plånbok:"
+  },
+  "Kurkkaa joulupukin tarkastussovellus": {
+    "en": "Check out Santa's verification app",
+    "de": "Schau dir die Überprüfungs-App des Weihnachtsmanns an",
+    "sv": "Kolla in jultomtens verifieringsapp"
+  },
+  "/pukki.html": {
+    "en": "/pukki.html?lang=en",
+    "de": "/pukki.html?lang=de",
+    "sv": "/pukki.html?lang=sv"
+  },
+  "Palaa": {
+    "en": "Go back",
+    "de": "Zurück",
+    "sv": "Gå tillbaka"
+  },
+  "Oho! Jotain meni pieleen...": {
+    "en": "Oops! Something went wrong...",
+    "de": "Hoppla! Etwas ist schief gelaufen...",
+    "sv": "Oj då! Något gick fel..."
+  },
+  "Pukin tarkastussovellus": {
+    "en": "Santa's Verification App",
+    "de": "Überprüfungs-App des Weihnachtsmanns",
+    "sv": "Jultomtens verifieringsapp"
+  },
+  "Pyydä lasta esittämään kiltteystodisteensa. Luo jokaista lasta varten uusi todistepyyntö alla olevalla painikkeella.": {
+    "en": "Ask the child to present their nice credential. Create a new credential request for each child using the button below.",
+    "de": "Bitten Sie das Kind, seinen braven Nachweis vorzulegen. Erstellen Sie für jedes Kind eine neue Nachweisanfrage mit der Schaltfläche unten.",
+    "sv": "Be barnet att visa sitt snälla intyg. Skapa en ny intygsförfrågan för varje barn med knappen nedan."
+  },
+  "Muodosta todistepyyntö": {
+    "en": "Create Credential Request",
+    "de": "Nachweisanfrage erstellen",
+    "sv": "Skapa intygsförfrågan"
+  },
+  "on ollut kiltti": {
+    "en": "has been nice",
+    "de": "ist brav gewesen",
+    "sv": "har varit snäll"
+  },
+  "Kyllä!": {
+    "en": "Yes!",
+    "de": "Ja!",
+    "sv": "Ja!"
+  },
+  "Ei!": {
+    "en": "No!",
+    "de": "Nein!",
+    "sv": "Nej!"
+  }
+}
