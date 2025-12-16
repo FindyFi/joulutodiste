@@ -44,6 +44,88 @@ h1 {
   font-style: normal;
   font-weight: 800;
 }
+translate-element {
+  color: #41ebff;
+  background-color: #0d0342;
+  border-color: #41ebff;
+  position: absolute;
+  top: 4em;
+  right: 1em;
+  z-index: 3;
+}
+/*
+  accent-color: #0a00be;
+*/
+translate-element li {
+  list-style-type: none;
+}
+translate-element li.selected {
+  display: none;
+}
+translate-element a {
+  color: #41ebff;
+  text-decoration: none;
+}
+translate-element a:hover {
+  text-decoration: underline;
+}
+translate-element li a[hreflang="de"]::after {
+  color: #41ebff;
+  content: " Was ist das? ";
+  font-size: 1rem;
+}
+translate-element li a[hreflang="de"] {
+  color: transparent;
+  font-size: 1px;
+}
+translate-element li a[hreflang="de"]::before {
+  color: #41ebff;
+  content: " 🇩🇪 ";
+  font-size: 1rem;
+}
+translate-element li a[hreflang="en"]::after {
+  color: #41ebff;
+  content: " What is this? ";
+  font-size: 1rem;
+}
+translate-element li a[hreflang="en"] {
+  color: transparent;
+  font-size: 1px;
+}
+translate-element li a[hreflang="en"]::before {
+  color: #41ebff;
+  content: " 🇬🇧 ";
+  font-size: 1rem;
+}
+translate-element li a[hreflang="fi"]::after {
+  color: #41ebff;
+  content: " Mitä tämä on? ";
+  font-size: 1rem;
+}
+translate-element li a[hreflang="fi"] {
+  color: transparent;
+  font-size: 1px;
+}
+translate-element li a[hreflang="fi"]::before {
+  color: #41ebff;
+  content: " 🇫🇮 ";
+  font-size: 1rem;
+}
+translate-element li a[hreflang="sv"]::after {
+  color: #41ebff;
+  content: " Vad är detta? ";
+  font-size: 1rem;
+}
+translate-element li a[hreflang="sv"] {
+  color: transparent;
+  font-size: 1px;
+}
+translate-element li a[hreflang="sv"]::before {
+  color: #41ebff;
+  content: " 🇸🇪 ";
+  font-size: 1rem;
+}
+
 #laatikko, #qrcode {
   border-radius: 25px;
   height: 306px;
@@ -98,17 +180,22 @@ h1 {
   padding: 0 1em;
   z-index: 2;
 }
+/*
 p+p {
   text-indent: 1em;
 }
+*/
 q {
   font-style: italic;
 }
 input {
   font-size: larger;
 }
-label, .label {
+label, .block {
   display: block
+}
+.block label {
+  display: inline;
 }
 button {
   background: linear-gradient(16deg, #0a00be, #41ebff);
@@ -118,12 +205,13 @@ button {
   margin: 1em 0;
   padding: 0.5em;
 }
-a.block {
+a {
   color: #FFF;
   cursor: pointer;
-  display: block;
-  margin-top: 1em;
   text-decoration: underline;
+}
+a.block {
+  margin-top: 1em;
 }
 footer {
   background: linear-gradient(180deg, #0d0342 0em, #0a00be 1.75em, #FFF 2em);
