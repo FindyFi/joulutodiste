@@ -12,6 +12,10 @@ app.use(express.json())
 app.use(express.static('public'))
 
 app.post('/issue', async (req, res) => {
+  if (!req.body.Etunimi || !req.body.Sukunimi) {
+    res.status(400).json({ error: 'Missing required claim values' })
+    return false
+  }
   const credentialParams = {
     credentialSchemaId: agent.schemas.credential.id,
     issuerDid: agent.dids[0],
@@ -29,7 +33,6 @@ app.post('/issue', async (req, res) => {
   })
   const offer = await agent.issueCredential(credentialParams)
   if (offer) {
-    console.log(offer)
     res.json(offer)
     return true
   }
