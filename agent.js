@@ -3,11 +3,11 @@ import { Agent } from 'credential-agent-procivis'
 import credentialSchema from './credentialschema.json' with { type: "json" }
 
 const config = {
-    "api_base": process.env.PROCIVIS_API_BASE || 'https://procivis.sandbox.findy.fi/api',
-    "api_token": process.env.PROCIVIS_API_TOKEN || '',
-    "token_endpoint": process.env.PROCIVIS_TOKEN_ENDPOINT || "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
-    "client_id": process.env.PROCIVIS_CLIENT_ID || "",
-    "client_secret": process.env.PROCIVIS_CLIENT_SECRET || "",
+    "api_base": process.env.JOULU_API_BASE || 'https://procivis.sandbox.findy.fi/api',
+    "api_token": process.env.JOULU_API_TOKEN || '',
+    "token_endpoint": process.env.JOULU_TOKEN_ENDPOINT || "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
+    "client_id": process.env.JOULU_CLIENT_ID || "",
+    "client_secret": process.env.JOULU_CLIENT_SECRET || "",
     "server_host": process.env.JOULU_SERVER_HOST || "localhost",
     "issuer_url": process.env.JOULU_ISSUER_HOST || "joulu.todiste.fi"
 }
