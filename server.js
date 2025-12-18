@@ -25,6 +25,9 @@ app.post('/issue', async (req, res) => {
   }
   agent.schemas.credential.claims.forEach(claim => {
     let value = req.body[claim.key]
+    if (claim.key === 'Kiltti') {
+      value = value === 'true' ? "true" : "false"
+    }
     credentialParams.claimValues.push({
       claimId: claim.id,
       value: value,
