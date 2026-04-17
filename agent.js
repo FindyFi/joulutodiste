@@ -3,7 +3,7 @@ import { Agent } from 'credential-agent-procivis'
 import credentialSchema from './credentialschema.json' with { type: "json" }
 
 const config = {
-    "api_base": process.env.JOULU_API_BASE || 'https://procivis.sandbox.findy.fi/api',
+    "api_base": process.env.JOULU_API_BASE || 'https://procivis.staging.findy.fi/api',
     "api_token": process.env.JOULU_API_TOKEN || '',
     "token_endpoint": process.env.JOULU_TOKEN_ENDPOINT || "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
     "client_id": process.env.JOULU_CLIENT_ID || "",
@@ -108,7 +108,12 @@ async function initDID(key) {
 }
 
 async function initCredentialSchema() {
-  const list = await agent.getCredentialSchemas({ name: credentialSchema.name, format: credentialSchema.format })
+  const list = await agent.getCredentialSchemas({
+    name: credentialSchema.name,
+    "formats[]": credentialSchema.format,
+    sort: 'createdDate',
+    sortDirection: 'DESC'
+  })
   const id = list?.values?.at(0)?.id // use the first returned
   let schema = {}
   if (id) {
@@ -122,7 +127,11 @@ async function initCredentialSchema() {
 }
 
 async function initVerificationSchema() {
-  const list = await agent.getVerificationSchemas({ name: agent.schemas.credential.name })
+  const list = await agent.getVerificationSchemas({
+    name: agent.schemas.credential.name,
+    sort: 'createdDate',
+    sortDirection: 'DESC'
+  })
   const pid = list?.values?.at(0)?.id // use the first returned
   let schema = {}
   if (pid) {
@@ -153,12 +162,14 @@ async function initVerificationSchema() {
 }
 
 async function clearSchemas() {
-  let list = await agent.getCredentialSchemas()
+  let list = await agent.getCredentialSchemas({ name: credentialSchema.name })
   for (const item of list?.values || []) {
+    console.log('Delete credential schema: ', JSON.stringify(item, null, 2))
     await agent.deleteCredentialSchema(item.id)
   }
-  list = await agent.getVerificationSchemas()
+  list = await agent.getVerificationSchemas({ name: credentialSchema.name })
   for (const item of list?.values || []) {
+    console.log('Delete verification schema: ', JSON.stringify(item, null, 2))
     await agent.deleteVerificationSchema(item.id)
   }
 }
