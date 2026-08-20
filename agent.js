@@ -9,7 +9,8 @@ const config = {
     "client_id": process.env.JOULU_CLIENT_ID || "",
     "client_secret": process.env.JOULU_CLIENT_SECRET || "",
     "server_host": process.env.JOULU_SERVER_HOST || "localhost",
-    "issuer_url": process.env.JOULU_ISSUER_HOST || "joulu.todiste.fi"
+    "issuer_url": process.env.JOULU_ISSUER_HOST || "joulu.todiste.fi",
+    "verifier_url": process.env.JOULU_VERIFIER_HOST || "joulu.todiste.fi"
 }
 
 const agentParams = {
@@ -30,31 +31,41 @@ else {
 const agent = new Agent(agentParams)
 await agent.authenticate(authParams)
 await agent.setOrganization(await initOrg())
-agent.keys = [ await initKey() ]
-agent.dids = [ await initDID(agent.keys[0]) ]
+agent.issuer = await initDID(config.issuer_url)
+// agent.verifier = await initDID(config.verifier_url)
+agent.verifier = agent.issuer
 agent.schemas.credential = await initCredentialSchema()
 agent.schemas.proof = await initVerificationSchema()
 
 export { agent }
 
 async function initOrg() {
-  const list = await agent.getOrganizations({ name: config.issuer_url })
-  let o
-  if (list && list.values && list.values.length > 0) {
-    o = list.values.at(0)
+  const list = await agent.getOrganizations({sort: 'createdDate', sortDirection: 'DESC'})
+  const orgs = list?.values || (Array.isArray(list) ? list : [])
+
+  if (orgs.length === 0) {
+    const created = await agent.createOrganization({})
+    console.log('Created organisation:', created.id)
+    return { id: created.id }
   }
-  else if (typeof list === typeof [] && list.length > 0) {
-    o = list.at(0)
+
+  for (const org of orgs) {
+    const dids = await agent.getDIDs({
+      organisationId: org.id,
+      "didMethods[]": 'WEB',
+      name: config.issuer_url
+    })
+    if (dids?.values?.length > 0) {
+      // console.log(`Found organisation ${org.id} with DID "${config.issuer_url}"`)
+      return org
+    }
   }
-  if (!o) {
-    o = await agent.createOrganization({ name: config.issuer_url })
-  }
-  return o
+  return orgs[0]
 }
 
 async function initKey() {
   let key = {}
-  const list = await agent.getKeys({ name: credentialSchema.name })
+  const list = await agent.getKeys({ name: config.issuer_url, sort: 'createdDate', sortDirection: 'DESC' })
   const id = list?.values?.at(0)?.id // use the first returned
   if (id) {
     key = list?.values?.at(0)
@@ -63,7 +74,7 @@ async function initKey() {
     const data = {
       keyType: 'ECDSA',
       keyParams: {},
-      name: credentialSchema.name,
+      name: config.issuer_url,
       storageType: 'INTERNAL',
       storageParams: {}
     }
@@ -73,54 +84,67 @@ async function initKey() {
   return key?.id
 }
 
-async function initDID(key) {
+async function initDID(url) {
   const listParams = {
     "didMethods[]": 'WEB',
-    name: config.issuer_url,
+    name: url,
     sort: 'createdDate',
     sortDirection: 'DESC'
   }
   const list = await agent.getDIDs(listParams)
   const id = list?.values?.at(0)?.id // use the first returned
+  let identifier, keyId
   if (id) {
-    const identifier = await agent.getDID(id)
-    // console.log(JSON.stringify(identifier, null, 2))
-    return identifier?.did?.id
+    identifier = await agent.getDID(id)
+    keyId = identifier?.did?.keys?.assertionMethod?.at(0)?.id
   }
   else {
+    keyId = await initKey()
     const data = {
-      name: config.issuer_url,
+      name: url,
       method: 'WEB',
       keys: {
-        authentication: [key],
-        assertionMethod: [key],
-        keyAgreement: [key],
-        capabilityInvocation: [key],
-        capabilityDelegation: [key]
+        authentication: [keyId],
+        assertionMethod: [keyId],
+        keyAgreement: [keyId],
+        capabilityInvocation: [keyId],
+        capabilityDelegation: [keyId]
       },
       params: {
-        externalHostingUrl: `https://${config.issuer_url}`
+        externalHostingUrl: `https://${url}`
       }
     }
-    const identifier = await agent.createDID(data)
-    return identifier?.did?.id
+    identifier = await agent.createDID(data)
+    if (!identifier?.id) {
+      throw new Error(`Could not create DID "${url}".`)
+    }
   }
+  return { id: identifier?.id, did: identifier?.did?.id, keyId }
 }
-
 async function initCredentialSchema() {
-  const list = await agent.getCredentialSchemas({
+  const searchParams = {
     name: credentialSchema.name,
-    "formats[]": credentialSchema.format,
+    "formats[]": credentialSchema.formats[0].format,
     sort: 'createdDate',
     sortDirection: 'DESC'
-  })
+  }
+  const list = await agent.getCredentialSchemas(searchParams)
   const id = list?.values?.at(0)?.id // use the first returned
   let schema = {}
   if (id) {
     schema = await agent.getCredentialSchema(id)
   }
   else {
-    const res = await agent.createCredentialSchema(credentialSchema)
+    const org = await agent.getOrganization()
+    const data = {
+      ...credentialSchema,
+      organisationId: org.id
+    }
+    console.log('Creating credential schema with organisationId:', org.id)
+    const res = await agent.createCredentialSchema(data)
+    if (!res?.id) {
+      throw new Error(`Could not create credential schema "${credentialSchema.schemaId}" in organisation ${org.id}.`)
+    }
     schema = await agent.getCredentialSchema(res.id)
   }
   return schema
