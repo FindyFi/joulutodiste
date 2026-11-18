@@ -26,7 +26,8 @@ app.post('/issue', async (req, res) => {
   agent.schemas.credential.claims.forEach(claim => {
     let value = req.body[claim.key]
     if (claim.key === 'Kiltti') {
-      value = value === 'true' ? "true" : "false"
+      // the page sends a JSON boolean, other callers may send a string; Core wants a string
+      value = String(value) === 'true' ? "true" : "false"
     }
     credentialParams.claimValues.push({
       claimId: claim.id,
